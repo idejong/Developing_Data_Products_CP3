@@ -30,7 +30,8 @@ As part of the course project of the Developing Data Products course at Coursera
 
 - This shiny application aims to eneable the user to explore the iris dataset, more particularly the relationship between Sepal Length and Petal Length. 
 - The Shiny Application can be accessed with the link:  https://idejong.shinyapps.io/cp3_shinyapp/
-- This presentation was developed using the package slidify in R and can be accessed at Github using the link:
+- This presentation was developed using the package slidify in R
+- The code to reproduce the Shiny application and the presentation can be accessed at Github using the link: https://github.com/idejong/Developing_Data_Products_CP3
 
 ---
 ## The data
