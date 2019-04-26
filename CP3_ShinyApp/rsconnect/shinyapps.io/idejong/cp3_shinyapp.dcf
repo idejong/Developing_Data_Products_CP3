@@ -1,0 +1,10 @@
+name: cp3_shinyapp
+title:
+username:
+account: idejong
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 881674
+bundleId: 2029129
+url: https://idejong.shinyapps.io/cp3_shinyapp/
+when: 1555932951.14982

@@ -78,3 +78,5 @@ sidebarPanel(
                       value = FALSE)
     )
 ```
+
+---

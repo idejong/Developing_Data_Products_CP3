@@ -101,3 +101,5 @@ sidebarPanel(
                       value = FALSE)
     )
 ```
+
+---
