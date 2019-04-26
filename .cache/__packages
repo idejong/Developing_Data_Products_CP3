@@ -1,4 +1,5 @@
 base
+slidify
 ggplot2
 plotly
 bindrcpp
