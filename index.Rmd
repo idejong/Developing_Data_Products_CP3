@@ -1,0 +1,103 @@
+---
+title       : A Shiny Application
+subtitle    : Part of the Course Project Shiny Application and Reproducible Pitch
+author      : idejong
+job         : 
+font-family : 'Arial'
+css         : custom.css
+framework   : flowtime   # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+output      : ioslides_presentation
+---
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(plotly)
+
+```
+
+<section style="text-align:center;">
+# A Shiny Application
+### Part of the Course Project Shiny Application and Reproducible Pitch
+##### Author: idejong
+
+---
+## Introduction 
+As part of the course project of the Developing Data Products course at Coursera, a Shiny Application was developed in R.
+
+- This shiny application aims to eneable the user to explore the iris dataset, more particularly the relationship between Sepal Length and Petal Length. 
+- The Shiny Application can be accessed with the link:  https://idejong.shinyapps.io/cp3_shinyapp/
+- This presentation was developed using the package slidify in R and can be accessed at Github using the link:
+
+---
+## The data
+This famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor and virginica.
+
+```{r, echo=FALSE}
+head(iris)
+```
+
+
+
+
+---
+## Exploring the Iris dataset with a Shiny Application
+The shiny application aims to eneable the user to explore the iris dataset, more particularly the relationship between Sepal Length and Petal Length. The user can opt to show the species as well as the regression line, and play around with different ranges of the Sepal Length. 
+
+An example of the interactive graph in the application is shown below.
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+# Calculate the line:
+fv <- iris %>% lm(iris$Petal.Length ~ iris$Sepal.Length,.) %>% fitted.values()
+
+# Make the base 
+plot <- plot_ly(x = ~iris$Sepal.Length,
+                y = ~iris$Petal.Length, mode = "markers") %>%
+    
+    layout(title = "Scatterplot of Sepal Length and Petal Length",
+           xaxis = list(title = "Sepal Length"),
+           yaxis = list(title = "Petal Length", 
+                        range= c(0.5, 8))) %>% layout(showlegend = T)
+# Add colors based on species:
+plot <- add_markers(plot, 
+                    marker = list(color= factor(iris$Species, 
+                                                labels = c("red","purple", "blue"))), 
+                    split = ~iris$Species)
+
+    
+# Add regression line:
+plot <- add_trace(plot, x = ~iris$Sepal.Length, y = fv, 
+                  mode = "lines", color='green',
+                  marker = list(color = 'red', opacity=0), 
+                  name = 'Regression line')
+
+
+htmlwidgets::saveWidget(as.widget(plot), file = "plot.html")
+
+```
+
+<iframe width="800" height="400" src="plot.html"></iframe>
+
+---
+## How the application works
+The application presents an interactive graph. The user is able to provide input that is used as an input for the parameters of the graph. The user input is collected in the ui.r script and used in the server.r script as a boolean variable indicating whether the user opted to show the species and whether the user opted to show the regression line.
+
+The code in the User Interface (ui.R) responsible for this collecting this input is as follows: 
+```{r, echo=TRUE, warning=FALSE, message=FALSE, error=FALSE, eval=FALSE} 
+sidebarPanel(
+        sliderInput("slider", 
+                    label = h4("Choose the range of variable Sepal Length"), 
+                    min = min(iris$Sepal.Length), 
+                    max = max(iris$Sepal.Length), 
+                    value = c(min(iris$Sepal.Length), max(iris$Sepal.Length))),
+        
+        checkboxInput(inputId='showspecies', label="Show species", 
+                      value = FALSE),
+
+        checkboxInput(inputId='showline', label="Show regression line", 
+                      value = FALSE)
+    )
+```
